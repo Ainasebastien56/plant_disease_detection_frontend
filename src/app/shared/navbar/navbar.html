@@ -1,0 +1,35 @@
+<nav class="z-10 h-24 px-6 md:px-20 lg:px-30 w-full flex items-center justify-between " style="background-color:#FCF9F2;">
+       <img class="w-48 object-cover" src="/images/plantguard_mu.png" alt="logo">
+
+        <ul class="hidden md:flex absolute left-1/2 -translate-x-1/2  list-none gap-6 ">
+                <li><a [ngClass]="{'active': isActive('/') }" routerLink="/">Home</a></li>
+                <li><a [ngClass]="{'active': isActive('/diagnose') }" routerLink="/diagnose" >Diagnose</a></li>
+                <li><a [ngClass]="{'active': isActive('/about')  }" routerLink="/about">About</a></li>
+            </ul>
+        <button [ngClass]="{'active': isActive('/diagnose') }" routerLink="/diagnose" class="hidden md:flex flex-none bg-[#1A4731] text-sm text-white py-2 px-4  rounded-lg shadow-lg shadow-[0_4px_10px_rgba(26,71,49,0.5)] cursor-pointer">
+            Start Scan
+        </button> 
+
+         <button class="flex md:hidden flex-col gap-[5px] p-1 bg-transparent border-none cursor-pointer"
+            (click)="toggleMenu()">
+                <span class="block w-6 h-[2px] bg-[#1A4731] rounded transition-all duration-300"
+                    [class.rotate-45]="menuOpen" [class.translate-y-[7px]]="menuOpen"></span>
+                <span class="block w-6 h-[2px] bg-[#1A4731] rounded transition-all duration-300"
+                    [class.opacity-0]="menuOpen"></span>
+                <span class="block w-6 h-[2px] bg-[#1A4731] rounded transition-all duration-300"
+                    [class.-rotate-45]="menuOpen" [class.-translate-y-[7px]]="menuOpen"></span>
+        </button>
+</nav>
+
+<ul *ngIf="menuOpen" class="md:hidden flex flex-col bg-[#FCF9F2] px-6 pb-6 shadow-lg border-t border-[#1A4731]/10">
+  <li class="border-b border-[#1A4731]/10">
+    <a routerLink="/" (click)="toggleMenu()" class="block py-3">Home</a>
+  </li>
+  <li class="border-b border-[#1A4731]/10">
+    <a routerLink="/diagnose" (click)="toggleMenu()" class="block py-3">Diagnose</a>
+  </li>
+  <li>
+    <a routerLink="/about" (click)="toggleMenu()" class="block py-3">About</a>
+  </li>
+  <button [ngClass]="{'active': isActive('/diagnose') }" routerLink="/diagnose" class="mt-4 w-full bg-[#1A4731] text-white py-2 px-4 rounded-lg" (click)="toggleMenu()">Start Scan</button>
+</ul>

@@ -1,0 +1,49 @@
+<div class=" font-sans min-h-screen bg-[#F0EEE7]">
+    <div class="w-full mx-auto">
+        <div class="px-10 md:px-20 py-10 md:py-20 lg:px-30 flex flex-col md:flex-row  justify-between items-center gap-10">
+            <div class="flex-1 flex flex-col max-w-xl ">
+                <h1 class="text-5xl text-[#00301C] font-semibold mb-4">Empowering Mauritian Agriculture with AI</h1>
+                <p class="text-base leading-6 mb-4 text-[#414943]">
+                    PlantGuard MU is an AI research project developed
+                    to help Mauritian farmers detect crop diseases using
+                    deep learning models trained on <span class="text-[#056D3D]">Corn, Potato, Pepper and Tomato.</span>
+                </p>
+                <p class="inline-flex self-start items-center text-[#056D3D] bg-[#9DF6B8] text-sm gap-1 px-3 py-1 rounded-xl"> <svg lucideMapPin size="14"></svg> BUILT IN MAURITIUS</p>
+            </div>
+            <div class=" flex justify-end w-full min-w-[250px] md:max-w-md ld:max-w-lg">
+                <img class="w-full rounded-2xl" src="images/Mauritian Agriculture.png" alt="image-hero">
+            </div>
+        
+        </div>
+        <div class="relative px-10 md:px-20 lg:px-30 py-10 md:py-20 bg-white w-full  flex flex-col justify-center items-center">
+            <img src="/images/pepper.svg" class="absolute top-40 md:-top-15 -left-10  w-24 md:w-32 rotate-[20deg] opacity-60 pointer-events-none z-0" alt="pepper">
+            <img src="/images/sticker4.svg" class="absolute -bottom-10 md:bottom-50   -right-10  w-24 md:w-48 rotate-[-15deg] opacity-60 pointer-events-none z-0" alt="pepper">
+            <h3 class="text-3xl font-bold text-[#00301C] mb-5 w-full text-center">Evolution of our AI Models</h3>
+            <p class="text-base leading-6 mb-4 text-[#414943] text-center">
+                Continuous refinement for maximum diagnostic precision.
+            </p>
+            <div class="w-full grid grid-cols-1  md:grid-cols-2 lg:flex lg:flex-wrap lg:justify-center mt-10  gap-6">
+                @for (model of models; track model.number){
+                <div [ngClass]="model.number === '05'? 'bg-[#00301C] text-white' : 'bg-white'" class="rounded-xl shadow-xl border-1 border-[#C1C9C1] p-4 flex flex-col items-center text-center w-full lg:w-[calc(20%-1.5rem)] lg:min-w-[200px]">
+                    <div [ngClass]="model.number === '05'? 'bg-[#056D3D]' : 'bg-[#F0EEE7]'" class=" text-sm border-1 border-[#BDEECF] p-3 rounded-full ">
+                        @if(model.number === '05'){
+                            <svg lucideStar size="16"></svg>
+                        }
+                        @else{
+                            {{model.number}}
+                        } 
+                    </div>
+                    <h5 class="text-lg font-semibold mt-4">
+                        {{model.name}}
+                    </h5>
+                    <p class="text-sm mt-2">
+                        {{model.description}}
+                    </p>
+                </div>
+                }
+            </div>
+            
+        </div>
+
+    </div>
+</div>

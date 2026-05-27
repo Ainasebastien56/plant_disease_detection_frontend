@@ -1,0 +1,184 @@
+<div  class="relative font-sans min-h-screen bg-[#F0EEE7] px-10 md:px-30 py-10 md:py-20">
+  <img src="/images/tomato.svg" class="absolute -top-5  -right-5  w-24 md:w-32 rotate-[20deg] opacity-60 pointer-events-none z-0" alt="tomato">
+  <img src="/images/potato.svg" class="absolute top-60 md:top-100 -left-13  w-24 md:w-32 rotate-[20deg] opacity-60 pointer-events-none z-0" alt="potato">
+  <div class="w-full mx-auto">
+    <h1 class="text-3xl font-bold text-[#00301C] mb-1">Plant Health Diagnostic</h1>
+    <p class="text-gray-500 mb-6">Upload a clear photo of a single leaf to identify potential pests, diseases, or nutrient deficiencies.</p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <div class="flex flex-col gap-4">
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+          <ngx-dropzone 
+            (change)="onFileSelected($event)"
+            accept="image/jpeg,image/png"
+            [maxFileSize]="10485760"
+            [multiple]="false"
+            class="!border-2 !border-dashed !border-[#1A4731] !rounded-xl !bg-[#f8faf8] !h-56">
+
+            <ngx-dropzone-label *ngIf="!files.length">
+              <div class="flex flex-col items-center gap-2 text-gray-400">
+                <svg lucideCloudUpload size="32" color="#056D3D"></svg>
+                <p class="font-semibold text-gray-700">Drop your plant leaf image here</p>
+                <p class="text-sm">or click to browse local files</p>
+              </div>
+            </ngx-dropzone-label>
+
+            @for (f of files; track f) {
+              <ngx-dropzone-image-preview
+              [file]="f"
+              [removable]="true"
+              (removed)="onRemove()"
+              class="!rounded-lg !h-44">
+            </ngx-dropzone-image-preview>
+            }
+          </ngx-dropzone>
+
+          <!-- CROP TYPE + ANALYZE -->
+          <div class="mt-4">
+            <label class="text-xs font-bold tracking-widest text-[#1A4731] uppercase">Crop Type</label>
+            <div class="flex gap-3 mt-1">
+              <select [(ngModel)]="selectedCrop"
+                class="flex-1 border border-gray-200 rounded-lg px-4 py-2 bg-[#f5f5f0] text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1A4731]">
+                @for (crop of crops; track crop.value) {
+                  <option [value]="crop.value">{{ crop.label }}</option>
+                }
+              </select>
+
+              <button (click)="onAnalyze()"
+                [disabled]="!files.length || isLoading"
+                class="bg-[#1A4731] text-white px-6 py-2 rounded-lg font-semibold disabled:opacity-50 flex items-center gap-2 cursor-pointer">
+                <span *ngIf="isLoading" class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+                {{ isLoading ? 'Analyzing...' : 'Analyze' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPERT TIP -->
+        <div class="bg-[#1A4731] text-white rounded-2xl p-4 flex items-start gap-3">
+          <svg lucideLightbulb class="mt-1 opacity-80" size="20"></svg>
+          <div>
+            <p class="font-semibold">Expert Tip</p>
+            <p class="text-sm opacity-80">Natural daylight without harsh shadows provides the highest accuracy for leaf diagnostics.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+        <!-- ÉTAT VIDE -->
+         @if (!result && !isLoading) {
+          <div class="h-full flex flex-col items-center justify-center text-gray-300 gap-3">
+          <svg lucideScanLine size="48" color="#9ca3af"></svg>
+          <p class="text-sm">Results will appear here after analysis</p>
+        </div>
+         }
+        
+        <!-- LOADING -->
+         @if (isLoading){
+          <div class="h-full flex flex-col items-center justify-center gap-4">
+            <div class="w-12 h-12 border-4 border-[#1A4731] border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-gray-500 text-sm">Analyzing your leaf...</p>
+          </div>
+         }
+
+        <!-- RÉSULTATS -->
+         @if (result && !isLoading){
+          <div>
+            <!-- HEADER -->
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold tracking-widest text-gray-400 uppercase">Diagnosis Results</span>
+              <span [class]="'text-xs font-bold px-3 py-1 rounded-full uppercase ' + severityColor">
+                {{ result.severity }}
+              </span>
+            </div>
+
+            <!-- DISEASE NAME -->
+            <div class="text-center mb-6">
+              <h2 class="text-3xl font-bold text-gray-800">{{ result.disease }}</h2>
+              <p class="text-gray-400 italic text-sm mt-1">{{ result.scientificName }}</p>
+            </div>
+
+            <!-- CONFIDENCE CIRCLE (SVG dynamique) -->
+            <div class="flex justify-center mb-6">
+              <svg width="160" height="120" viewBox="0 0 160 160">
+                <!-- Cercle de fond -->
+                <circle cx="80" cy="80" r="60"
+                  fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                <!-- Cercle de progression -->
+                <circle cx="80" cy="80" r="60"
+                  fill="none"
+                  stroke="#1A4731"
+                  stroke-width="8"
+                  stroke-linecap="round"
+                  [attr.stroke-dasharray]="confidenceCircle.circumference"
+                  [attr.stroke-dashoffset]="confidenceCircle.offset"
+                  transform="rotate(-90 80 80)"
+                  style="transition: stroke-dashoffset 1s ease-in-out"/>
+                <!-- Texte -->
+                <text x="80" y="72" text-anchor="middle" class="text-2xl" font-size="26" font-weight="bold" fill="#1A4731">
+                  {{ result.confidence }}%
+                </text>
+                <text x="80" y="92" text-anchor="middle" font-size="10" fill="#9ca3af" letter-spacing="1">
+                  CONFIDENCE
+                </text>
+              </svg>
+            </div>
+
+            <!-- TREATMENT PLAN -->
+            <div class="bg-[#f8faf8] rounded-xl p-4 mb-4">
+              <div class="flex items-center gap-2 mb-3">
+                <svg lucideShieldPlus size="16" color="#1A4731"></svg>
+                <span class="font-semibold text-gray-700">Treatment Plan</span>
+              </div>
+              <ul class="space-y-2">
+                @for (tip of result.treatements; track tip) {
+                  <li class="flex items-start gap-2 text-sm text-gray-600">
+                  <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#1A4731] flex-shrink-0"></span>
+                  {{ tip }}
+                </li>
+                }
+              </ul>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="flex flex-col gap-2">
+              <button (click)="scanAnother()"
+                class="w-full bg-green-50 border border-green-200 text-[#1A4731] py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-green-100 cursor-pointer">
+                <svg lucideRefreshCcw size="16"></svg>
+                Scan Another
+              </button>
+              <button class="w-full border border-gray-200 text-gray-600 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
+                <svg lucideDownload size="16"></svg>
+                Export Report (PDF)
+              </button>
+            </div>
+
+        </div>
+         }
+        
+      </div>
+    </div>
+
+    <div class="w-full mt-20 flex flex-col">
+      <h3 class="text-2xl font-bold text-[#00301C]">How to take a better photo</h3>
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      @for (tip of tips; track tip.label){
+        <div class="bg-white rounded-xl">
+          <img class="w-full rounded-t-xl" [src]="tip.image" [alt]="tip.label">
+          <div class="flex flex-col p-5">
+              <span class="text-[#056D3D] text-base">{{tip.tip_number}}</span>
+              <h5 class="text-[#00301C] text-lg font-semibold">{{tip.label}}</h5>
+              <p class="text-sm">{{tip.text}}</p>
+          </div>
+        </div>
+      }
+
+      </div>
+    </div>
+   
+
+  </div>
+</div>
