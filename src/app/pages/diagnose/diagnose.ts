@@ -5,6 +5,7 @@ import {DISEASE_DATA} from '../../../../data/plant-diseases.data'
 import { LucideRefreshCcw, LucideDownload, LucideLightbulb, LucideCloudUpload, LucideShieldPlus} from '@lucide/angular';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 interface DiagnosisResult{
   disease: string;
@@ -91,7 +92,7 @@ export class Diagnose {
     formData.append('file', this.files[0]);
     formData.append('crop', this.selectedCrop);
 
-    this.http.post<any>('http://localhost:8000/predict/efficientnetb3', formData)
+    this.http.post<any>(`${environment.apiUrl}/predict/efficientnetb3`, formData)
     .subscribe({
       next: (data) => {
         const disease =  data.predicted_class;
