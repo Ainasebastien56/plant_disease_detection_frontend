@@ -77,6 +77,13 @@ export class Diagnose {
   onFileSelected(event: any){
     this.files = [event.addedFiles[0]]; // 1 seul fichier
     this.result = null;
+    this.cdr.detectChanges();
+
+     setTimeout(() => {
+        this.files = [event.addedFiles[0]];
+        this.result = null;
+        this.cdr.detectChanges();
+    }, 50);
   }
   
   onRemove(){
