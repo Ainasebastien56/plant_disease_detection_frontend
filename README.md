@@ -1,59 +1,160 @@
-# PlantDiseaseFrontend
+# 🌿 Plant Disease Detection
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.10.
+An AI-powered web application that detects plant diseases from leaf images using a custom-trained **EfficientNetB3** deep learning model, trained on **Corn, Tomato, Potato, and Pepper** crops.
 
-## Development server
+![Plant Disease Detection](https://raw.githubusercontent.com/Ainasebastien56/my-assets/refs/heads/main/images/plant_disease_detection.png)
 
-To start a local development server, run:
+## 🔗 Live Demo
+👉 [plant-disease-detection-pink-zeta.vercel.app](https://plant-disease-detection-pink-zeta.vercel.app/)
+
+---
+
+## 📌 Features
+
+- 📸 Upload a leaf image via drag & drop
+- 🌽 Supports **Corn, Tomato, Potato, and Pepper**
+- 🤖 AI diagnosis powered by **EfficientNetB3**
+- 📊 Confidence score with Top 3 predictions
+- 💊 Treatment recommendations for each disease
+- ⚡ Fast REST API with **FastAPI** deployed on Hugging Face Spaces
+
+---
+
+## 🧠 Supported Diseases (19 classes)
+
+> ⚠️ This model was trained exclusively on **Corn, Tomato, Potato, and Pepper** leaf images. Uploading leaves from other crops will produce inaccurate results.
+
+| Crop | Diseases |
+|------|----------|
+| 🌽 Corn | Gray Leaf Spot, Common Rust, Northern Leaf Blight, Healthy |
+| 🍅 Tomato | Bacterial Spot, Early Blight, Late Blight, Leaf Mold, Septoria Leaf Spot, Spider Mites, Target Spot, Yellow Leaf Curl Virus, Mosaic Virus, Healthy |
+| 🥔 Potato | Early Blight, Late Blight, Healthy |
+| 🌶️ Pepper | Bacterial Spot, Healthy |
+
+---
+
+## 🏗️ Architecture
+
+```
+Frontend (Angular)          Backend (FastAPI)
+      │                           │
+  Vercel                  Hugging Face Spaces
+      │                           │
+      └──────── HTTP POST ────────┘
+               /predict
+                    │
+           EfficientNetB3 Model
+```
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Angular 21** — Standalone components
+- **Tailwind CSS** — Styling
+- **ngx-dropzone** — Image upload
+- **Lucide Angular** — Icons
+
+### Backend
+- **FastAPI** — REST API
+- **TensorFlow 2.13** — Model inference
+- **EfficientNetB3** — Custom trained on PlantVillage dataset
+- **Uvicorn** — ASGI server
+
+### Deployment
+- **Vercel** — Frontend hosting
+- **Hugging Face Spaces** — Backend + Model hosting (Docker)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Python 3.10+
+- Angular CLI : `npm install -g @angular/cli`
+
+### 1. Clone the repository
 
 ```bash
+git clone https://github.com/Ainasebastien56/plant-disease-detection.git
+cd plant-disease-detection
+```
+
+### 2. Frontend setup
+
+```bash
+cd frontend
+npm install
 ng serve
 ```
+The app will be available at `http://localhost:4200`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 3. Backend setup
 
 ```bash
-ng generate component component-name
+cd fastapi
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+The API will be available at `http://localhost:8000`
+
+> ⚠️ Make sure your model is placed at `fastapi/models/effb3_best/` before starting the backend.
+
+### 4. API Documentation
+
+Once the backend is running, visit `http://localhost:8000/docs` for the interactive Swagger UI.
+
+---
+
+## 📁 Project Structure
+
+```
+plant-disease-detection/
+├── frontend/                   # Angular app
+│   ├── src/
+│   │   ├── app/
+│   │   │   └── diagnose/       # Main diagnosis component
+│   │   ├── data/               # Disease info & treatments
+│   │   └── environments/       # API URL config
+│   └── package.json
+│
+└── fastapi/                    # FastAPI backend
+    ├── main.py                 # API endpoints
+    ├── models_loader.py        # Model loading logic
+    ├── requirements.txt
+    ├── Dockerfile
+    └── models/
+        └── effb3_best/         # EfficientNetB3 SavedModel
+            ├── saved_model.pb
+            └── variables/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 📊 Model Performance
 
-## Building
+All models were trained on the [PlantVillage Dataset](https://www.kaggle.com/datasets/mohitsingh1804/plantvillage) on the same 19 classes (Corn, Tomato, Potato, Pepper).
 
-To build the project run:
+| Model | Accuracy |
+|-------|----------|
+| EfficientNetB3 | ~99% |
+| EfficientNetB0 | ~99% |
+| Custom CNN | ~93% |
+| VGG19 | ~94% |
+| VGG16 | ~87% |
 
-```bash
-ng build
-```
+> EfficientNetB3 was selected for deployment due to its best accuracy/size ratio.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 👤 Author
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+**Sebastien** — [GitHub](https://github.com/Ainasebastien56)
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 📄 License
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is open source and available under the [MIT License](LICENSE).
