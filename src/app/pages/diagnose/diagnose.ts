@@ -6,13 +6,14 @@ import { LucideRefreshCcw, LucideDownload, LucideLightbulb, LucideCloudUpload, L
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import jsPDF from 'jspdf';
 
 interface DiagnosisResult{
   disease: string;
   scientificName: string;
   confidence: number;
   severity: 'LOW' | 'MODERATE' | 'SEVERE';
-  treatements: string[];
+  treatments: string[];
 }
 
 @Component({
@@ -28,6 +29,7 @@ export class Diagnose {
   selectedCrop ='corn';
   isLoading = false;
   result: DiagnosisResult | null = null;
+  selectedImageBase64: string | null = null;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef){}
 
@@ -76,8 +78,16 @@ export class Diagnose {
 
   onFileSelected(event: any){
     this.files = [event.addedFiles[0]]; // 1 seul fichier
+    if (!this.files.length) return;
     this.result = null;
     this.cdr.detectChanges();
+
+    const reader = new FileReader();
+    reader.onload = () =>{
+      this.selectedImageBase64 = reader.result as string;
+    };
+    reader.readAsDataURL(this.files[0])
+
 
      setTimeout(() => {
         this.files = [event.addedFiles[0]];
@@ -106,11 +116,11 @@ export class Diagnose {
         const info = DISEASE_DATA[disease];
         console.log('Received data:', disease);
          this.result = {
-        disease,
+        disease: info.disease,
         scientificName: info.scientificName,
         confidence: data.confidence,
         severity: info.severity,
-        treatements: info.treatments
+        treatments: info.treatments
       }
       this.isLoading = false;
       this.cdr.detectChanges();
@@ -126,6 +136,55 @@ export class Diagnose {
   scanAnother(){
     this.files = [];
     this.result = null;
+  }
+
+  exportPDF(){
+    if(!this.result) return;
+
+    const doc =  new jsPDF();
+    const now = new Date().toLocaleDateString();
+
+
+    //Title
+    doc.setFontSize(20)
+    doc.text('Plant Disease Diagnosis Report', 20, 20);
+
+    //Date
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+    doc.text(`Generated: ${now}`, 20, 30);
+
+    //Separative line
+    doc.setDrawColor(200);
+    doc.line(20,35,190,35);
+
+     //Image
+    if(this.selectedImageBase64){
+      doc.addImage(this.selectedImageBase64, 'JPEG', 130, 40,60,60)
+    } 
+    // Disease Info
+    doc.setFontSize(13);
+    doc.setTextColor(0)
+    doc.text('Diagnosis', 20, 45);
+
+    doc.setFontSize(11);
+    doc.text(`Disease         : ${this.result.disease}`, 20, 55);
+    doc.text(`Scientific name : ${this.result.scientificName}`, 20, 63);
+    doc.text(`Confidence      : ${this.result.confidence}%`, 20, 71);
+    doc.text(`Severity        : ${this.result.severity}`, 20, 79);
+
+
+    //Treatments
+    doc.setFontSize(13);
+    doc.text('Treatments', 20, 110);
+
+    doc.setFontSize(11);
+    this.result.treatments.forEach((tip, index) =>{
+      const lines = doc.splitTextToSize(`${index + 1}. ${tip}`, 170);
+      doc.text(lines, 20, 120 + index * 20);
+    });
+
+    doc.save(`diagnosis-report-${Date.now()}.pdf`)
   }
 
 }

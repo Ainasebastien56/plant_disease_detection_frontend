@@ -134,7 +134,7 @@
                 <span class="font-semibold text-gray-700">Treatment Plan</span>
               </div>
               <ul class="space-y-2">
-                @for (tip of result.treatements; track tip) {
+                @for (tip of result.treatments; track tip) {
                   <li class="flex items-start gap-2 text-sm text-gray-600">
                   <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#1A4731] flex-shrink-0"></span>
                   {{ tip }}
@@ -150,7 +150,8 @@
                 <svg lucideRefreshCcw size="16"></svg>
                 Scan Another
               </button>
-              <button class="w-full border border-gray-200 text-gray-600 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
+              <button (click)="exportPDF()"
+                class="w-full border border-gray-200 text-gray-600 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
                 <svg lucideDownload size="16"></svg>
                 Export Report (PDF)
               </button>

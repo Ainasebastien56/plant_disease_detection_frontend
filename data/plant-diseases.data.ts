@@ -1,7 +1,8 @@
-export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'LOW' | 'MODERATE' | 'SEVERE'; treatments: string[] }> = {
+export const DISEASE_DATA: Record<string, { disease: string; scientificName: string; severity: 'LOW' | 'MODERATE' | 'SEVERE'; treatments: string[] }> = {
 
   // CORN
   'Corn_(maize)___Common_rust_': {
+    disease: 'Corn (maize) - Common Rust',
     scientificName: 'Puccinia sorghi',
     severity: 'MODERATE',
     treatments: [
@@ -11,6 +12,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot': {
+    disease: 'Corn (maize) - Cercospora Gray Leaf Spot',
     scientificName: 'Cercospora zeae-maydis',
     severity: 'MODERATE',
     treatments: [
@@ -20,6 +22,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Corn_(maize)___Northern_Leaf_Blight': {
+    disease: 'Corn (maize) - Northern Leaf Blight',
     scientificName: 'Exserohilum turcicum',
     severity: 'SEVERE',
     treatments: [
@@ -29,6 +32,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Corn_(maize)___healthy': {
+    disease: 'Corn (maize) - Healthy',
     scientificName: '-',
     severity: 'LOW',
     treatments: ['Your plant is healthy! Continue regular watering and monitoring.']
@@ -36,6 +40,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
 
   // TOMATO
   'Tomato___Late_blight': {
+    disease: 'Tomato - Late Blight',
     scientificName: 'Phytophthora infestans',
     severity: 'SEVERE',
     treatments: [
@@ -45,6 +50,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___Early_blight': {
+    disease: 'Tomato - Early Blight',
     scientificName: 'Alternaria solani',
     severity: 'MODERATE',
     treatments: [
@@ -54,6 +60,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___Leaf_Mold': {
+    disease: 'Tomato - Leaf Mold',
     scientificName: 'Passalora fulva',
     severity: 'MODERATE',
     treatments: [
@@ -63,11 +70,13 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___healthy': {
+    disease: 'Tomato - Healthy',
     scientificName: '-',
     severity: 'LOW',
     treatments: ['Your plant is healthy! Continue regular watering and monitoring.']
   },
   'Tomato___Septoria_leaf_spot': {
+    disease: 'Tomato - Septoria Leaf Spot',
     scientificName: 'Septoria lycopersici',
     severity: 'MODERATE',
     treatments: [
@@ -77,6 +86,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___Spider_mites Two-spotted_spider_mite': {
+    disease: 'Tomato - Spider Mites',
     scientificName: 'Tetranychus urticae',
     severity: 'MODERATE',
     treatments: [
@@ -86,6 +96,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___Target_Spot': {
+    disease: 'Tomato - Target Spot',
     scientificName: 'Corynespora cassiicola',
     severity: 'MODERATE',
     treatments: [
@@ -95,6 +106,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___Tomato_mosaic_virus': {
+    disease: 'Tomato - Mosaic Virus',
     scientificName: 'Tomato mosaic virus (ToMV)',
     severity: 'SEVERE',
     treatments: [
@@ -104,6 +116,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Tomato___Tomato_Yellow_Leaf_Curl_Virus': {
+    disease: 'Tomato - Yellow Leaf Curl Virus',
     scientificName: 'Tomato yellow leaf curl virus (TYLCV)',
     severity: 'SEVERE',
     treatments: [
@@ -115,6 +128,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
 
   // POTATO
   'Potato___Late_blight': {
+    disease: 'Potato - Late Blight',
     scientificName: 'Phytophthora infestans',
     severity: 'SEVERE',
     treatments: [
@@ -124,6 +138,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Potato___Early_blight': {
+    disease: 'Potato - Early Blight',
     scientificName: 'Alternaria solani',
     severity: 'MODERATE',
     treatments: [
@@ -133,6 +148,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Potato___healthy': {
+    disease: 'Potato - Healthy',
     scientificName: '-',
     severity: 'LOW',
     treatments: ['Your plant is healthy! Continue regular watering and monitoring.']
@@ -140,6 +156,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
 
   // PEPPER
   'Pepper,_bell___Bacterial_spot': {
+    disease: 'Pepper - Bacterial Spot',
     scientificName: 'Xanthomonas campestris',
     severity: 'SEVERE',
     treatments: [
@@ -149,6 +166,7 @@ export const DISEASE_DATA: Record<string, { scientificName: string; severity: 'L
     ]
   },
   'Pepper,_bell___healthy': {
+    disease: 'Pepper - Healthy',
     scientificName: '-',
     severity: 'LOW',
     treatments: ['Your plant is healthy! Continue regular watering and monitoring.']
